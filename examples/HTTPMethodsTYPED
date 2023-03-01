@@ -1,0 +1,165 @@
+Examples of available HTTP METHODS (Typed, all features available)
+
+Making a GET Json Request
+
+@ExperimentalCoroutinesApi
+private fun sendGetJsonRequest() {
+    lifecycleScope.launch(Dispatchers.Main) {
+        val result: Result<CallResponse, HoodiesNetworkError> = withContext(Dispatchers.IO) {
+            mobileHttpClient.get(endpoint / url / here)
+        }
+        when (result) {
+            is Success -> {
+                val gson = Gson()
+                binding.resultView.text = gson.toJson(result.value)
+            }
+            is Failure -> {
+                binding.resultView.text = result.reason.message
+            }
+        }
+    }
+}
+
+Making a GET HTML Request
+
+@ExperimentalCoroutinesApi
+private fun sendGetHtmlRequest() {
+    lifecycleScope.launch(Dispatchers.Main) {
+        val result = withContext(Dispatchers.IO) {
+            mobileHttpClient.getHtml(endpoint / url / here)
+        }
+        when (result) {
+            is Success -> {
+                binding.resultView.text = result.value
+            }
+            is Failure -> {
+                binding.resultView.text = result.reason.message
+            }
+        }
+    }
+}
+
+Making a GET Image Request
+
+@ExperimentalCoroutinesApi
+private fun sendGetImageRequest() {
+    lifecycleScope.launch(Dispatchers.Main) {
+        val result = withContext(Dispatchers.IO) {
+            mobileHttpClient.getImage(
+                binding.editText.text.toString(),
+                0,
+                0,
+                ImageView.ScaleType.CENTER,
+                Bitmap.Config.ALPHA_8
+            )
+        }
+        when (result) {
+            is Success -> {
+                binding.resultView.setImageBitmap(result.value)
+            }
+            is Failure -> {
+                binding.errorView.text = result.reason.message
+            }
+        }
+    }
+}
+
+Making a POST Json Request
+
+@ExperimentalCoroutinesApi
+private fun sendPostJsonRequest() {
+    lifecycleScope.launch(Dispatchers.Main) {
+        val result: Result<CallResponse, HoodiesNetworkError> = withContext(Dispatchers.IO) {
+            mobileHttpClient.post(endpoint / url / here)
+        }
+        when (result) {
+            is Success -> {
+                val gson = Gson()
+                binding.resultView.text = gson.toJson(result.value)
+            }
+            is Failure -> {
+                binding.resultView.text = result.reason.message
+            }
+        }
+    }
+}
+
+Making a  POST Json Object Request
+
+private fun sendJsonObjectRequest() {
+    lifecycleScope.launch(Dispatchers.Main) {
+        val url = binding.editText.text.toString()
+        val jsonObject = JSONObject("{\"name\":\"Test\", \"age\":25}")
+        val result: Result<CallResponse, HoodiesNetworkError> = withContext(Dispatchers.IO) {
+            mobileHttpClient.post(url, jsonObject)
+        }
+        when (result) {
+            is Success -> {
+                binding.resultView.text = gson.toJson(result.value)
+            }
+            is Failure -> {
+                binding.resultView.text = result.reason.message
+            }
+        }
+    }
+}
+
+Making a POST Json Array Request
+
+private fun sendJsonArrayRequest() {
+    lifecycleScope.launch(Dispatchers.Main) {
+        val url = binding.editText.text.toString()
+        val jsonArray = JSONArray(
+            "[{\"name\":\"Test 1\", \"age\":25}," +
+                    "{\"name\":\"Test 2\", \"age\":22},{\"name\":\"Test 3\", \"age\":21}]"
+        )
+
+        val result: Result<CallResponse, HoodiesNetworkError> = withContext(Dispatchers.IO) {
+            mobileHttpClient.post(url, jsonArray)
+        }
+        when (result) {
+            is Success -> {
+                binding.resultView.text = gson.toJson(result.value)
+            }
+            is Failure -> {
+                binding.resultView.text = result.reason.message
+            }
+        }
+    }
+}
+
+Making a PATCH Request
+
+private fun sendPatchRequest() {
+    lifecycleScope.launch(Dispatchers.Main) {
+        val result: Result<CallResponse, HoodiesNetworkError> = withContext(Dispatchers.IO) {
+            mobileHttpClient.patch(endpoint / url / here, body, headers)
+        }
+        when (result) {
+            is Success -> {
+                val gson = Gson()
+                binding.resultView.text = gson.toJson(result.value)
+            }
+            is Failure -> {
+                binding.resultView.text = result.reason.message
+            }
+        }
+    }
+}
+
+Making a multipart file upload request with multiple files
+
+when (
+val result =
+    client.postMultipartFiles<String>("post", arrayListOf(fileOne, fileTwo), defaultHeaders))
+
+{
+    is Success -> {
+    val files = JSONObject(result.value).getJSONObject("files")
+    assertEquals(files.getString("file0"), "First file")
+    assertEquals(files.getString("file1"), "Second file")
+}
+    is Failure -> {
+    throw result.reason
+     }
+}

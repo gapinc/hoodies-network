@@ -1,0 +1,342 @@
+Examples of available HTTP METHODS - RAW DATA (No cache, returns result string)
+
+Available GET Methods
+
+suspend fun getRaw(
+    api: String,
+    additionalHeaders: HashMap<String, String>? = null
+): Result<String, HoodiesNetworkError>
+
+suspend fun getRawUrlQueryParam(
+    queryParams: HashMap<String, String>,
+    api: String,
+    additionalHeaders: HashMap<String, String>? = null
+): Result<String, HoodiesNetworkError>
+
+suspend fun getRawUrlQueryParamEncoded(
+    queryParams: HashMap<String, String>,
+    api: String,
+    additionalHeaders: HashMap<String, String>? = null
+): Result<String, HoodiesNetworkError>
+
+GET Method Usage
+
+host: http://localhost
+api: /get
+
+internal fun sendGetJsonRequest() {
+    viewModelScope.launch(Dispatchers.Main) {
+        val result: Result<String, HoodiesNetworkError> = withContext(Dispatchers.IO) {
+            val url = "get"
+            mobileHttpClient.getRaw(url)
+        }
+        when (result) {
+            is Success -> {
+                getRawJsonResponse.postValue(result.value)
+            }
+            is Failure -> {
+                getRawJsonResponse.postValue("Code: " result . reason . code . toString () + " Message: " + result.reason.message)
+            }
+        }
+    }
+}
+
+
+host: http://localhost
+api: /weather
+params: q, appid
+full url: http://localhost/weather?q=London,uk&appid=2b1fd2d7f77ccf1b7de9b441571b39b8
+
+internal fun sendGetUrlQueryRequest() {
+    viewModelScope.launch(Dispatchers.Main) {
+        val result: Result<String, HoodiesNetworkError> = withContext(Dispatchers.IO) {
+            val queryParams: HashMap<String, String> = HashMap()
+            queryParams["q"] = "London,uk"
+            queryParams["appid"] = "2b1fd2d7f77ccf1b7de9b441571b39b8"
+            val api = "/weather"
+            weatherHttpClient.getRawUrlQueryParam(
+                queryParams = queryParams,
+                api = api
+            )
+        }
+        when (result) {
+            is Success -> {
+                getRawURLQueryResponse.postValue(result.value)
+            }
+            is Failure -> {
+                getRawURLQueryResponse.postValue(getError(result.reason))
+            }
+        }
+    }
+  }
+}
+
+
+host:  http://localhost/
+api: /weather
+params: q, appid
+full url encoded: http://localhost/weather?q=London%2Cuk&appid=2b1fd2d7f77ccf1b7de9b441571b39b8
+
+internal fun sendGetQueryParamEncodedRequest() {
+    viewModelScope.launch(Dispatchers.Main) {
+        val result: Result<String, HoodiesNetworkError> = withContext(Dispatchers.IO) {
+            val queryParams: HashMap<String, String> = HashMap()
+            queryParams["q"] = "London,uk"
+            queryParams["appid"] = "2b1fd2d7f77ccf1b7de9b441571b39b8"
+            val api = "/weather"
+            weatherHttpClient.getRawUrlQueryParamEncoded(
+                queryParams = queryParams,
+                api = api
+            )
+        }
+        when (result) {
+            is Success -> {
+                getRawQueryParamEncodedResponse.postValue(result.value)
+            }
+            is Failure -> {
+                getRawQueryParamEncodedResponse.postValue(getError(result.reason))
+            }
+        }
+    }
+}
+
+POST
+Available POST Methods
+
+suspend fun postRaw(
+    api: String,
+    additionalHeaders: HashMap<String, String>? = null
+): Result<String, HoodiesNetworkError>
+
+suspend fun postRaw(
+    api: String,
+    requestBody: String,
+    additionalHeaders: HashMap<String, String>? = null
+): Result<String, HoodiesNetworkError>
+
+suspend fun postRaw(
+    api: String,
+    requestBody: HashMap<String, String>,
+    additionalHeaders: HashMap<String, String>
+): Result<String, HoodiesNetworkError>
+
+POST Method Usage
+
+host: http://localhost/
+api: /post
+full url: http://localhost/post
+
+internal fun sendPostJsonRequest() {
+    viewModelScope.launch(Dispatchers.Main) {
+        val result: Result<String, HoodiesNetworkError> = withContext(Dispatchers.IO) {
+            mobileHttpClient.postRaw("post")
+        }
+        when (result) {
+            is Success -> {
+                val gson = Gson()
+                postRawJsonQueryResponse.postValue(result.value)
+            }
+            is Failure -> {
+                postRawJsonQueryResponse.postValue(getError(result.reason))
+            }
+        }
+    }
+}
+
+host: http://localhost
+api: /post
+full url: http://localhost/post
+requestBody (Json string): {"name":"Test","age":25}
+
+internal fun sendJsonObjectRequest(): LiveData<String> {
+    viewModelScope.launch(Dispatchers.Main) {
+        val url = "post"
+        val jsonObject = JSONObject("{\"name\":\"Test\", \"age\":25}")
+        val result: Result<String, HoodiesNetworkError> = withContext(Dispatchers.IO) {
+            mobileHttpClient.postRaw(url, jsonObject.toString())
+        }
+        when (result) {
+            is Success -> {
+                jsonObjectResponse.postValue(gson.toJson(result.value))
+            }
+            is Failure -> {
+                jsonObjectResponse.postValue(gson.toJson(result.reason.message))
+            }
+        }
+    }
+    return jsonObjectResponse
+}
+
+host: http://example.url
+api: /signup
+full url: http://example.url/signup
+body hashmap: { username: michael }
+headers: application/x-www-form-urlencoded
+
+internal fun sendPostUrlQueryEncodedRequest() {
+    viewModelScope.launch(Dispatchers.Main) {
+        val result: Result<String, HoodiesNetworkError> = withContext(Dispatchers.IO) {
+            val additionalHeaders: HashMap<String, String> = HashMap()
+            additionalHeaders[CONTENT_TYPE_KEY] = FORM_URL_ENCODED
+            val pathParams = "/signup"
+            val body: HashMap<String, String> = HashMap()
+            body["username"] = "michael"
+            localHttpClient.postRaw(pathParams, body, additionalHeaders)
+        }
+        when (result) {
+            is Success -> {
+                postRawURLEncodedResponse.postValue(result.value)
+            }
+            is Failure -> {
+                postRawURLEncodedResponse.postValue(getError(result.reason))
+            }
+        }
+    }
+}
+
+PUT
+Available PUT Methods
+
+suspend fun putRaw(
+    api: String,
+    requestBody: String,
+    additionalHeaders: HashMap<String, String>? = null
+): Result<String, HoodiesNetworkError>
+
+PUT Method Usage:
+
+internal fun sendPutRequest() {
+    viewModelScope.launch(Dispatchers.Main) {
+        val result: Result<String, HoodiesNetworkError> = withContext(Dispatchers.IO) {
+            mobileHttpClient.putRaw("put", "")
+        }
+        when (result) {
+            is Success -> {
+                putResponse.postValue(result.value)
+            }
+            is Failure -> {
+                putResponse.postValue(getError(result.reason.code))
+            }
+        }
+    }
+}
+
+DELETE
+Available DELETE Methods
+
+suspend fun deleteRaw(
+    api: String,
+    additionalHeaders: HashMap<String, String>? = null
+): Result<String, HoodiesNetworkError>
+
+DELETE Method Usage
+
+internal fun sendDeleteRequest() {
+    viewModelScope.launch(Dispatchers.Main) {
+        val result: Result<String, HoodiesNetworkError> = withContext(Dispatchers.IO) {
+            mobileHttpClient.deleteRaw("delete")
+        }
+        when (result) {
+            is Success -> {
+                deleteResponse.postValue(result.value)
+            }
+            is Failure -> {
+                deleteResponse.postValue(result.reason.code)
+            }
+        }
+    }
+}
+
+PATCH
+Available PATCH methods:
+
+suspend fun patchRaw(
+    api: String,
+    additionalHeaders: HashMap<String, String>? = null
+): Result<String, GapError>
+
+suspend fun patchRaw(
+    api: String,
+    requestBody: String,
+    additionalHeaders: HashMap<String, String>? = null
+): Result<String, GapError>
+
+suspend fun patchRaw(
+    api: String,
+    requestBody: HashMap<String, String>,
+    additionalHeaders: HashMap<String, String>
+): Result<String, GapError>
+
+PATCH Method Usage
+
+host: http://localhost/
+api: /patch
+full url: http://localhost/patch
+
+internal fun sendPostJsonRequest() {
+    viewModelScope.launch(Dispatchers.Main) {
+        val result: Result<String, HoodiesNetworkError> = withContext(Dispatchers.IO) {
+            mobileHttpClient.patchRaw("patch")
+        }
+        when (result) {
+            is Success -> {
+                val gson = Gson()
+                postRawJsonQueryResponse.postValue(result.value)
+            }
+            is Failure -> {
+                postRawJsonQueryResponse.postValue(getError(result.reason))
+            }
+        }
+    }
+}
+
+host: http://localhost
+api: /patch
+full url: http://localhost/patch
+requestBody (Json string): {"name":"Test","age":25}
+
+internal fun sendJsonObjectRequest(): LiveData<String> {
+    viewModelScope.launch(Dispatchers.Main) {
+        val url = "patch"
+        val jsonObject = JSONObject("{\"name\":\"Test\", \"age\":25}")
+        val result: Result<String, HoodiesNetworkError> = withContext(Dispatchers.IO) {
+            mobileHttpClient.patchRaw(url, jsonObject.toString())
+        }
+        when (result) {
+            is Success -> {
+                jsonObjectResponse.postValue(gson.toJson(result.value))
+            }
+            is Failure -> {
+                jsonObjectResponse.postValue(gson.toJson(result.reason.message))
+            }
+        }
+    }
+    return jsonObjectResponse
+}
+
+host: http://example.url
+api: /signup
+full url: http://example.url/signup
+body hashmap: { username: michael }
+headers: application/x-www-form-urlencoded
+
+internal fun sendPostUrlQueryEncodedRequest() {
+    viewModelScope.launch(Dispatchers.Main) {
+        val result: Result<String, HoodiesNetworkError> = withContext(Dispatchers.IO) {
+            val additionalHeaders: HashMap<String, String> = HashMap()
+            additionalHeaders[CONTENT_TYPE_KEY] = FORM_URL_ENCODED
+            val pathParams = "/signup"
+            val body: HashMap<String, String> = HashMap()
+            body["username"] = "michael"
+            localHttpClient.patchRaw(pathParams, body, additionalHeaders)
+        }
+        when (result) {
+            is Success -> {
+                postRawURLEncodedResponse.postValue(result.value)
+            }
+            is Failure -> {
+                postRawURLEncodedResponse.postValue(getError(result.reason))
+            }
+        }
+    }
+}
