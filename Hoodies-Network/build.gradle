@@ -57,6 +57,10 @@ android {
         }
     }
 
+    lint {
+        sarifReport true
+    }
+
     buildFeatures {
         compose true
     }
@@ -94,6 +98,17 @@ publishing {
                         dependencyNode.appendNode('artifactId', dependency.name)
                         dependencyNode.appendNode('version', dependency.version)
                 }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri('https://maven.pkg.github.com/gapinc/hoodies-network')
+
+            credentials {
+                username = System.getenv("GPR_USER")
+                password = System.getenv("GPR_KEY")
             }
         }
     }
