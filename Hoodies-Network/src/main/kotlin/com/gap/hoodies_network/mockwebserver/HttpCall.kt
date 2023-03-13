@@ -1,12 +1,14 @@
 package com.gap.hoodies_network.mockwebserver
 
 import android.net.Uri
+import com.gap.hoodies_network.utils.Generated
 import com.sun.net.httpserver.Headers
 import com.sun.net.httpserver.HttpExchange
 
 /**
  * Provides a friendly interface for interacting with HTTP requests and sending responses
  */
+@Generated
 class HttpCall(val httpExchange: HttpExchange) {
 
     /**
@@ -44,11 +46,11 @@ class HttpCall(val httpExchange: HttpExchange) {
             if (next == -1) next = l
             if (next > last) {
                 val eqPos: Int = body.indexOf('=', last)
-                    if (eqPos < 0 || eqPos > next) {
-                        map[Uri.decode((body.substring(last, next)))] = ""
-                    } else {
-                        map[Uri.decode(body.substring(last, eqPos))] = Uri.decode(body.substring(eqPos + 1, next))
-                    }
+                if (eqPos < 0 || eqPos > next) {
+                    map[Uri.decode((body.substring(last, next)))] = ""
+                } else {
+                    map[Uri.decode(body.substring(last, eqPos))] = Uri.decode(body.substring(eqPos + 1, next))
+                }
             }
             last = next + 1
         }

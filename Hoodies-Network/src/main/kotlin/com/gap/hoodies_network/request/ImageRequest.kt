@@ -99,7 +99,7 @@ class ImageRequest(
         return response
     }
 
-    private fun getResizedDimension(
+    fun getResizedDimension(
         maxPrimary: Int,
         maxSecondary: Int,
         actualPrimary: Int,

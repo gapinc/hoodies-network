@@ -19,6 +19,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -219,5 +220,89 @@ class ImageRequestMockTest {
                 }
             }
         }
+    }
+
+    @Test
+    fun getResizeValueWithSpecifiedHWTest(){
+        val testUrl = "http://localhost:6969/image"
+        val errorListener = Response.ErrorListener {  }
+        val request = ImageRequest(testUrl, 200, 200, Bitmap.Config.ARGB_8888,
+            object : Response.BitmapResponseListener {
+                override fun onResponse(bitmap: Bitmap?) {}
+                override fun onError(response: HoodiesNetworkError) {}
+            },
+            errorListener, cache, null)
+        val resize = request.getResizeValueWithSpecifiedHW(60, 60, 30,25, ImageView.ScaleType.CENTER_CROP)
+        assertTrue(resize == 72)
+    }
+
+    @Test
+    fun getResizeValueWithSpecifiedHWTestZeros(){
+        val testUrl = "http://localhost:6969/image"
+        val errorListener = Response.ErrorListener {  }
+        val request = ImageRequest(testUrl, 200, 200, Bitmap.Config.ARGB_8888,
+            object : Response.BitmapResponseListener {
+                override fun onResponse(bitmap: Bitmap?) {}
+                override fun onError(response: HoodiesNetworkError) {}
+            },
+            errorListener, cache, null)
+        val resize = request.getResizeValueWithSpecifiedHW(0, 0, 50,40, ImageView.ScaleType.CENTER_CROP)
+        assertTrue(resize == 0)
+    }
+
+    @Test
+    fun getResizedValueTest(){
+        val testUrl = "http://localhost:6969/image"
+        val errorListener = Response.ErrorListener {  }
+        val request = ImageRequest(testUrl, 200, 200, Bitmap.Config.ARGB_8888,
+            object : Response.BitmapResponseListener {
+                override fun onResponse(bitmap: Bitmap?) {}
+                override fun onError(response: HoodiesNetworkError) {}
+            },
+            errorListener, cache, null)
+        val resize = request.getResizedValue(80, 70, 50,40, ImageView.ScaleType.CENTER_CROP)
+        assertTrue(resize == 87)
+    }
+
+    @Test
+    fun getResizedValueTestZeros(){
+        val testUrl = "http://localhost:6969/image"
+        val errorListener = Response.ErrorListener {  }
+        val request = ImageRequest(testUrl, 200, 200, Bitmap.Config.ARGB_8888,
+            object : Response.BitmapResponseListener {
+                override fun onResponse(bitmap: Bitmap?) {}
+                override fun onError(response: HoodiesNetworkError) {}
+            },
+            errorListener, cache, null)
+        val resize = request.getResizedValue(0, 0, 40,40, ImageView.ScaleType.CENTER_CROP)
+        assertTrue(resize == 0)
+    }
+
+    @Test
+    fun getResizedDimensionTest(){
+        val testUrl = "http://localhost:6969/image"
+        val errorListener = Response.ErrorListener {  }
+        val request = ImageRequest(testUrl, 200, 200, Bitmap.Config.ARGB_8888,
+            object : Response.BitmapResponseListener {
+                override fun onResponse(bitmap: Bitmap?) {}
+                override fun onError(response: HoodiesNetworkError) {}
+            },
+            errorListener, cache, null)
+        val resize = request.getResizedDimension(80, 70, 60,40, ImageView.ScaleType.CENTER_CROP)
+        assertTrue(resize == 105)
+    }
+
+    @Test
+    fun getResizedDimensionTestZeros(){
+        val testUrl = "http://localhost:6969/image"
+        val errorListener = Response.ErrorListener {  }
+        val request = ImageRequest(testUrl, 200, 200, Bitmap.Config.ARGB_8888,
+            object : Response.BitmapResponseListener {
+                override fun onResponse(bitmap: Bitmap?) {}
+                override fun onError(response: HoodiesNetworkError) {}
+            },
+            errorListener, cache, null)
+        val resize = request.getResizedDimension(0, 0, 50,50, ImageView.ScaleType.CENTER_CROP)
+        assertTrue(resize == 0)
     }
 }
