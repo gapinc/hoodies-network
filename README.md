@@ -87,7 +87,7 @@ Kotlin version 1.6.10
 
 ## Usage Examples
 
-Please refer to our [Examples Folder](https://github.gapinc.com/coreComponents/gapNetwork/tree/opensource-network/examples) for example usages of the library.
+Please refer to our [Examples Folder](https://github.com/gapinc/hoodies-network/tree/main/examples) for example usages of the library.
 
 ## Steps to make HTTP Calls
 
@@ -98,7 +98,7 @@ It must be instantiated via its Builder.
 <b>Optionally, you can create an Interceptor Class which inherits from com.gap.network.interceptor.Interceptor</b>
 Interceptors allow you read/modify all properties (headers, body, etc) of requests and responses before they are executed/delivered
 
-CancellableMutableRequests can be cancelled by calling cancellableMutableRequest.cancelRequest(Success(object to return)) or cancellableMutableRequest.cancelRequest(Failure(message, code, throwable)) - depending on what you want to return
+CancellableMutableRequests can be cancelled by calling ```cancellableMutableRequest.cancelRequest(Success(object to return))``` or ```cancellableMutableRequest.cancelRequest(Failure(message, code, throwable))``` - depending on what you want to return
 
 RetryableCancellableMutableRequests can be cancelled as well as retried. If the request has its body or headers changed, the retry attempt will execute the request with those changes intact
 ```kotlin
