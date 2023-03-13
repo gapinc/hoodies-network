@@ -1,11 +1,13 @@
 package com.gap.hoodies_network.mockwebserver
 
+import com.gap.hoodies_network.utils.Generated
 import com.sun.net.httpserver.HttpServer
 import java.net.InetSocketAddress
 
 /**
  * This class manages the MockWebServer
  */
+@Generated
 class MockWebServerManager(builder: Builder) {
 
     private val httpServer: HttpServer = HttpServer.create(InetSocketAddress(builder.port), 0)

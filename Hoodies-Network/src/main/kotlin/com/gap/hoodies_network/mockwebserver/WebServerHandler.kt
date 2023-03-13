@@ -1,5 +1,6 @@
 package com.gap.hoodies_network.mockwebserver
 
+import com.gap.hoodies_network.utils.Generated
 import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpHandler
 
@@ -8,6 +9,7 @@ import com.sun.net.httpserver.HttpHandler
  * For every endpoint being served by the MockWebServer, a class inheriting from WebServerHandler must be made
  * Then, the class needs to override handleRequest(call: HttpCall) in order to handle the request using a ktor-like syntax
  */
+@Generated
 open class WebServerHandler {
     var postRunnable: Runnable? = null
     var getRunnable: Runnable? = null

@@ -3,8 +3,10 @@ package com.gap.hoodies_network.cache.persistentstorage
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import com.gap.hoodies_network.utils.Generated
 
 @Dao
+@Generated
 interface CacheDao {
     @Insert
     fun insert(vararg item: CachedData)

@@ -11,12 +11,14 @@ import com.gap.hoodies_network.cookies.CookieJar
 import com.gap.hoodies_network.interceptor.EncryptionDecryptionInterceptor
 import com.gap.hoodies_network.interceptor.Interceptor
 import com.gap.hoodies_network.request.*
+import com.gap.hoodies_network.utils.Generated
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import java.net.CookieManager
 import java.util.*
 
+@Generated
 class HoodiesNetworkClient(
     builder: Builder
 ) : IHoodiesNetworkClientRaw {
