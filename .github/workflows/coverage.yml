@@ -36,12 +36,14 @@ jobs:
           path: ${{ github.workspace }}/Hoodies-Network/build/reports/coverage/androidTest/debug/report.xml
           token: ${{ secrets.GITHUB_TOKEN }}
           min-coverage-overall: 80
+          min-coverage-changed-files: 0
           debug-mode: false
+          update-comment: true
+          title: Test Coverage Report
 
       - name: Get the Coverage info
         run: |
           echo "Total coverage ${{ steps.jacoco.outputs.coverage-overall }}"
-          echo "Changed Files coverage ${{ steps.jacoco.outputs.coverage-changed-files }}"
 
       - name: Fail PR if overall coverage is less than 80%
         if: ${{ steps.jacoco.outputs.coverage-overall < 80.0 }}
