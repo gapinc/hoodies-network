@@ -18,7 +18,7 @@ android {
 
     defaultConfig {
         minSdk 28
-        targetSdk 30
+        targetSdk 32
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -55,6 +55,10 @@ android {
                 xml.enabled true
             }
         }
+    }
+
+    lint {
+        sarifReport true
     }
 
     buildFeatures {
@@ -94,6 +98,17 @@ publishing {
                         dependencyNode.appendNode('artifactId', dependency.name)
                         dependencyNode.appendNode('version', dependency.version)
                 }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri('https://maven.pkg.github.com/gapinc/hoodies-network')
+
+            credentials {
+                username = System.getenv("GPR_USER")
+                password = System.getenv("GPR_KEY")
             }
         }
     }

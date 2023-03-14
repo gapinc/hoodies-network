@@ -6,6 +6,7 @@ import com.gap.hoodies_network.core.HoodiesNetworkClient
 import com.gap.hoodies_network.mockwebserver.HttpCall
 import com.gap.hoodies_network.mockwebserver.MockWebServerManager
 import com.gap.hoodies_network.mockwebserver.WebServerHandler
+import com.gap.hoodies_network.utils.Generated
 import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.Exception
@@ -14,7 +15,9 @@ import java.util.function.Consumer
 /**
  * Provides a friendly DSL for mocking APIs
  */
+@Generated
 class MockServerMaker {
+    @Generated
     class Builder {
         private var method = HoodiesNetworkClient.HttpMethod.POST
         private var expectedInput: Any = JSONObject()
@@ -133,6 +136,7 @@ class MockServerMaker {
 /**
  * This function determines if two JSONObjects are the same
  */
+@Generated
 fun JSONObject.similar(compareTo: JSONObject) : Boolean {
     var result = true
 
@@ -154,6 +158,7 @@ fun JSONObject.similar(compareTo: JSONObject) : Boolean {
 /**
  * This function determines if two JSONArrays are the same
  */
+@Generated
 fun JSONArray.similar(compareTo: JSONArray): Boolean {
     var result = true
 

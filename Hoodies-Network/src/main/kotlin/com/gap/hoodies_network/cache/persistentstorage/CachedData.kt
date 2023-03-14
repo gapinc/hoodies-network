@@ -3,8 +3,10 @@ package com.gap.hoodies_network.cache.persistentstorage
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.gap.hoodies_network.utils.Generated
 
 @Entity
+@Generated
 data class CachedData(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "url") val url: String,
