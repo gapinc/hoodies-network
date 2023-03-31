@@ -1,6 +1,6 @@
 # Hoodies-Network library
 
-Hoodies-Network is a modern, type-safe and high-performance Android HTTP library.
+Hoodies-Network is a modern, type-safe and high-performance Android HTTP library. 
 
 ## Table of Contents
 * [Introduction](#introduction) 
