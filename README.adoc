@@ -1,11 +1,10 @@
 = Hoodies-Network
-Hoodies-Network is a modern, type-safe and high-performance Android HTTP library.
-
 :toc:
 :source-highlighter: highlightjs
 
 == Introduction
-Hoodies-Network was originally designed for use in Gap's Instant Apps. It:
+Hoodies-Network is a modern, type-safe and high-performance Android HTTP library.
+It was originally designed for use in Gap's Instant Apps. It:
 
 * Offers a highly competitive feature set while being smaller than other libraries
 * Is Kotlin-native
