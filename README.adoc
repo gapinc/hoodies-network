@@ -1,5 +1,6 @@
 = Hoodies-Network
 Hoodies-Network is a modern, type-safe and high-performance Android HTTP library.
+
 :toc:
 :source-highlighter: highlightjs
 
@@ -73,19 +74,19 @@ class SessionInterceptor(context: Context) : Interceptor(context) {
 
     override fun interceptError(error: GapError, retryableCancellableMutableRequest: RetryableCancellableMutableRequest, autoRetryAttempts: Int) {
         //This is invoked before the failure callback is called, so you can retry the request if, for example, it fails because of expired authorization data:
-	    //if (error.code == 403) {
-	    //	val headers = retryableCancellableMutableRequest.request.getHeaders().toMutableMap()        	
-	    //	headers["Authorization"] = getNewAuthorization()
+	//if (error.code == 403) {
+	//	val headers = retryableCancellableMutableRequest.request.getHeaders().toMutableMap()        	
+	//	headers["Authorization"] = getNewAuthorization()
         //	retryableCancellableMutableRequest.request.setRequestHeaders(headers)
-	    //
-	    //  	retryableCancellableMutableRequest.retryRequest()
-	    //}
+	//
+	//  	retryableCancellableMutableRequest.retryRequest()
+	//}
     }
 
     override fun interceptNetwork(isOnline: Boolean, cancellableMutableRequest: CancellableMutableRequest) {
-	    //This is the first interceptor that is invoked. Here, you can define what happens if the device knows that it is offline
+	//This is the first interceptor that is invoked. Here, you can define what happens if the device knows that it is offline
         //If you don't want the request to be executed if there is no network connection, you can do something like this:
-	    //if (!isOnline) { cancellableMutableRequest.cancelRequest(Failure(GapError("No connection!", 0, SocketTimeoutException("No connection!")))) }
+	//if (!isOnline) { cancellableMutableRequest.cancelRequest(Failure(GapError("No connection!", 0, SocketTimeoutException("No connection!")))) }
     }
 
     override fun interceptResponse(result: Result<*, GapError>, request: Request<Any>?) {
