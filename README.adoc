@@ -59,9 +59,9 @@ val client = HoodiesNetworkClient.Builder()
 === Using Interceptors
 Optionally, you can create an Interceptor Class which inherits from com.gap.network.interceptor.Interceptor Interceptors allow you read/modify all properties (headers, body, etc) of requests and responses before they are executed/delivered.
 
-CancellableMutableRequests can be cancelled by calling `cancellableMutableRequest.cancelRequest(Success(object to return))` or `cancellableMutableRequest.cancelRequest(Failure(message, code, throwable))` - depending on what you want to return.
+`CancellableMutableRequests` can be cancelled by calling `cancellableMutableRequest.cancelRequest(Success(object to return))` or `cancellableMutableRequest.cancelRequest(Failure(message, code, throwable))` - depending on what you want to return.
 
-RetryableCancellableMutableRequests can be cancelled as well as retried. If the request has its body or headers changed, the retry attempt will execute the request with those changes intact.
+`RetryableCancellableMutableRequests` can be cancelled as well as retried. If the request has its body or headers changed, the retry attempt will execute the request with those changes intact.
 
 [source,kotlin]
 ----
@@ -111,7 +111,7 @@ The following options are available:
 * Connect timeout can be configured using `HttpClientConfig.setConnectTimeOut(Duration.ofSeconds(seconds))`
 * Read timeout can be configured using `HttpClientConfig.setReadTimeOut(Duration.ofSeconds(seconds))`
 * Setting the duration to 0 will make the timeout infinite
-* Changes apply to all HttpClients
+* Changes apply to all `HttpClient`s
 * Defaults can be restored using `HttpClientConfig.setFactoryDefaultConfiguration()`
 
 === Handling Cookies
@@ -264,9 +264,9 @@ The test classes package path is at com.gap.hoodies_network(androidTest). The te
 * UrlResolverTest
 * CookieTests
 
-You can run the tests by right-clicking on the androidTestFolder and then clicking "Run Tests".
+You can run the tests by right-clicking on the androidTest folder and then clicking "Run Tests".
 
-Note: Having your android emulator or physical device connected is required.
+Note: Having your Android emulator or physical device connected is required.
 
 == Environment Setup
 * This is a Gradle project. You can use any Android and Gradle-compatible IDE. Use of Android Studio is highly suggested.
