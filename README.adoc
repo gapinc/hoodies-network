@@ -111,7 +111,7 @@ The following options are available:
 * Connect timeout can be configured using `HttpClientConfig.setConnectTimeOut(Duration.ofSeconds(seconds))`
 * Read timeout can be configured using `HttpClientConfig.setReadTimeOut(Duration.ofSeconds(seconds))`
 * Setting the duration to 0 will make the timeout infinite
-* Changes apply to all `HttpClient`s
+* Changes apply to all `HttpClients`
 * Defaults can be restored using `HttpClientConfig.setFactoryDefaultConfiguration()`
 
 === Handling Cookies
