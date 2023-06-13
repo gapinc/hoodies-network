@@ -135,7 +135,7 @@ By default, no data is cached. Caching can be configured and enabled as follows:
 .. If the data in the cache needs to be encrypted, set `encryptionEnabled = true`
 .. Decide what the stale data threshold should be and set it: `staleDataThreshold = Duration.ofSeconds(60)`
 .. Instantiate the object: `val cacheConfiguration = CacheEnabled(encryptionEnabled = true, staleDataThreshold = Duration.ofSeconds(60), context)`
-. Pass the `CacheEnabled`` object to the `cacheConfiguration`` parameter when making a network request:
+. Pass the `CacheEnabled` object to the `cacheConfiguration` parameter when making a network request:
 
 [source,kotlin]
 ----
@@ -177,8 +177,7 @@ The MockWebServer can replicate your API endpoints for unit testing purposes.
 
 1. Create a `MockWebServerManager.Builder()` and set the port: `val serverBuilder = MockWebServerManager.Builder().usePort(5000)`
 2. Mock your API endpoints:
-
-    a. (For simple use-cases) Using the MockServerMaker DSL:
+    .. (For simple use-cases) Using the MockServerMaker DSL:
 
 [source,kotlin]
 ----
@@ -209,7 +208,7 @@ MockServerMaker.Builder()
 [start=2]
 2. Mock your API endpoints (continued):
 [start=2]
-    b. (For advanced behavior) By making a WebServerHandler() for your endpoint:
+    .. (For advanced behavior) By making a WebServerHandler() for your endpoint:
 
 [source,kotlin]
 ----
