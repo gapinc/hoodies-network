@@ -207,6 +207,7 @@ MockServerMaker.Builder()
     .applyToMockWebServerBuilder("/test", serverBuilder)
 ---- 
 .(For advanced behavior) By making a WebServerHandler() for your endpoint:
++
 [source,kotlin]
 ----
 val handler = object : WebServerHandler() {
