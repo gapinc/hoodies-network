@@ -206,8 +206,7 @@ MockServerMaker.Builder()
     .returnThisJsonIfInputMatches(JSONObject(response))
     .applyToMockWebServerBuilder("/test", serverBuilder)
 ---- 
-.Mock your API endpoints (For advanced behavior) By making a WebServerHandler() for your endpoint:
-+
+.(For advanced behavior) By making a WebServerHandler() for your endpoint:
 [source,kotlin]
 ----
 val handler = object : WebServerHandler() {
