@@ -178,10 +178,8 @@ class EncDecInterceptor(override val context: Context) : EncryptionDecryptionInt
 The MockWebServer can replicate your API endpoints for unit testing purposes.
 
 . Create a `MockWebServerManager.Builder()` and set the port: `val serverBuilder = MockWebServerManager.Builder().usePort(5000)`
-. Mock your API endpoints:
+. Mock your API endpoints (For simple use-cases) Using the MockServerMaker DSL:
 +
-
-.(For simple use-cases) Using the MockServerMaker DSL:
 [source,kotlin]
 ----
 //Make request body
@@ -208,8 +206,8 @@ MockServerMaker.Builder()
     .returnThisJsonIfInputMatches(JSONObject(response))
     .applyToMockWebServerBuilder("/test", serverBuilder)
 ---- 
-
-.(For advanced behavior) By making a WebServerHandler() for your endpoint:
+.Mock your API endpoints (For advanced behavior) By making a WebServerHandler() for your endpoint:
++
 [source,kotlin]
 ----
 val handler = object : WebServerHandler() {
@@ -232,7 +230,6 @@ val handler = object : WebServerHandler() {
 
 serverBuilder.addContext("/echodelay", handler)
 ---- 
-
 . Start the MockWebServer: `val server = serverBuilder.start()`
 . Run your tests
 . Stop the MockWebServer: `server.stop()`
