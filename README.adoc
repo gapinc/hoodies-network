@@ -269,30 +269,26 @@ The test classes are as follows:
 * UrlResolverTest
 * CookieTests
 
-You can run the tests by right-clicking on the androidTest folder and then clicking "Run Tests".
+Tests can be run by right-clicking on the androidTest folder and selecting "Run Tests" from the dropdown menu.
 
-NOTE: Having your Android emulator or physical device connected is required.
+NOTE: A physical device or Android emulator is required to run the tests.
 
 == Environment Setup
-* This is a Gradle project - you can use any Android and Gradle-compatible IDE. Use of Android Studio is highly suggested.
+* Since this is a Gradle project, any Android and Gradle-compatible IDE can be used. The recommendation is Android Studio.
 
 * Android Studio Bumblebee and above are supported.
-
-* It it also highly recommended that you have an emulator or physical device connected - this allows you to run the unit tests.
 
 == Conduct
 This is a professional environment and you are expected to conduct yourself in a professional and courteous manner. 
 If you fail to exhibit appropriate conduct, your contributions and interactions will no longer be welcome here.
 
 == Contributing
-* All are welcome and encouraged to contribute. If you are looking for a place to start, try working on an unassigned issue with the `good-first-issue` tag. 
+* Everyone is welcome and encouraged to contribute. If you are looking for a place to start, try working on an unassigned issue with the `good-first-issue` tag. 
 
 * All contributions are expected to conform to standard Kotlin code style and be covered by unit tests.
 
-* If you open a pull request with failing tests, your PR will not be merged and you will be asked to resolve the issue. 
+* PRs will not merged if there are failing tests.
 
 * If you would like to contribute code you can do so through GitHub by forking the repository and sending a pull request. 
 
-* When submitting code, please make every effort to follow existing conventions and style in order to keep the code as readable as possible. 
-
-* Please also make sure your code compiles and passes all tests by running `./gradlew clean build` (or gradlew.bat clean build for Windows).
+* When submitting code, please follow the existing conventions and style in order to keep the code readble. 
