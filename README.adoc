@@ -3,14 +3,11 @@
 :source-highlighter: highlightjs
 
 == Introduction
-Hoodies-Network is a modern, type-safe and high-performance Android HTTP library.
-It was originally designed for use in Gap's Instant Apps. It:
+Hoodies-Network is a modern, type-safe and high-performance Android HTTP library. Though its feature set has expanded over time to match and sometimes exceed other libraries with respect to performance.  It was originally designed to make network calls in Gap’s Instant Apps.
 
-* Offers a highly competitive feature set while being smaller than other libraries
+* Is designed using a philosophy of simple and clean architecture
+* Offers a highly competitive feature set while providing a smaller binary size
 * Is Kotlin-native
-* Is designed using a philosophy of simple and clean design/architecture
-
-Though its feature set has expanded over time to match and sometimes exceed other libraries, its Instant App roots remain and the post-minification apk size is still the smallest.
 
 == Features
 * URL parameter replacement and query parameter support
@@ -30,10 +27,10 @@ Though its feature set has expanded over time to match and sometimes exceed othe
 == Usage Guide
 === Getting Started
 . Integrate this library as a dependency in your project:
-.. Clone this project and publish it to your local Maven repository:
+.. Clone the project and publish it to your local Maven repository:
 ... (In Android Studio top menu) Build -> Clean Build
-... Build -> Make Module 'Hoodies-Network.Hoodies-Network'
-... Gradle -> Tasks -> publishing -> publishAarPublicationToMavenLocal
+... *Build* -> *Make Module 'Hoodies-Network.Hoodies-Network'*
+... *Gradle* -> *Tasks* -> *publishing* -> *publishAarPublicationToMavenLocal*
 .. Use Gradle to add it as a dependency in your project: 
 ... `implementation "com.gap.androidlibraries:hoodies-networkandroid:latest"`
 . Build your HttpClient:
@@ -49,47 +46,59 @@ val defaultHeaders = hashMapOf(
 val client = HoodiesNetworkClient.Builder()
     .baseUrl(baseUrl)
     .addHeaders(defaultHeaders)
-    //More on Interceptors later
     .addInterceptor(sessionInterceptor)
-    //More on automatic retry later
     .retryOnConnectionFailure(true, HoodiesNetworkClient.RetryCount.RETRY_MAX)
     .build()
 ----
 
 === Using Interceptors
-Optionally, you can create an Interceptor Class which inherits from com.gap.network.interceptor.Interceptor Interceptors allow you read/modify all properties (headers, body, etc) of requests and responses before they are executed/delivered.
+Optionally, you can create an `Interceptor` Class which inherits from `com.gap.network.interceptor.Interceptor`. 
+`Interceptors` allow you read/modify all properties (headers, body, etc) of requests and responses before they are executed/delivered.
 
-`CancellableMutableRequests` can be cancelled by calling `cancellableMutableRequest.cancelRequest(Success(object to return))` or `cancellableMutableRequest.cancelRequest(Failure(message, code, throwable))` - depending on what you want to return.
+`CancellableMutableRequests` can be cancelled by calling `cancellableMutableRequest.cancelRequest(Success(object to return))` or `cancellableMutableRequest.cancelRequest(Failure(message, code, throwable))` - based on your usecase.
 
-`RetryableCancellableMutableRequests` can be cancelled as well as retried. If the request has its body or headers changed, the retry attempt will execute the request with those changes intact.
+`RetryableCancellableMutableRequests` can be cancelled as well as retried. 
+If the request has its body or headers changed, the retry attempt will execute the request with the changes intact.
 
 [source,kotlin]
 ----
 class SessionInterceptor(context: Context) : Interceptor(context) {
 
-    override fun interceptRequest(identifier: String, cancellableMutableRequest: CancellableMutableRequest) {
-        //Called after interceptNetwork, just before a request is executed
-    }
-
-    override fun interceptError(error: GapError, retryableCancellableMutableRequest: RetryableCancellableMutableRequest, autoRetryAttempts: Int) {
-        //This is invoked before the failure callback is called, so you can retry the request if, for example, it fails because of expired authorization data:
-	//if (error.code == 403) {
-	//	val headers = retryableCancellableMutableRequest.request.getHeaders().toMutableMap()        	
-	//	headers["Authorization"] = getNewAuthorization()
-        //	retryableCancellableMutableRequest.request.setRequestHeaders(headers)
-	//
-	//  	retryableCancellableMutableRequest.retryRequest()
-	//}
-    }
-
     override fun interceptNetwork(isOnline: Boolean, cancellableMutableRequest: CancellableMutableRequest) {
-	//This is the first interceptor that is invoked. Here, you can define what happens if the device knows that it is offline
-        //If you don't want the request to be executed if there is no network connection, you can do something like this:
-	//if (!isOnline) { cancellableMutableRequest.cancelRequest(Failure(GapError("No connection!", 0, SocketTimeoutException("No connection!")))) }
+	//First thing that is called before the request is made
+	//Here, you can define what happens if the device knows that it is offline
+	//For example:
+        //If you don't want the request to be executed if there is no network connection:
+	if (!isOnline) { cancellableMutableRequest.cancelRequest(Failure(HoodiesNetworkError("No connection!", 0, SocketTimeoutException("No connection!")))) }
     }
 
-    override fun interceptResponse(result: Result<*, GapError>, request: Request<Any>?) {
-        //This is invoked upon the successful completion of a request before the success object is returned
+    override fun interceptRequest(identifier: String, cancellableMutableRequest: CancellableMutableRequest) {
+        //Second thing that is called before the request is made
+	//Here, you can define some universal behaviors for all network requests
+	//For example:
+	//Append an Authorization header
+	val headers = cancellableMutableRequest.request.getHeaders().toMutableMap()        	
+	headers["Authorization"] = "Something"
+        cancellableMutableRequest.request.setRequestHeaders(headers)
+    }
+
+    override fun interceptError(error: HoodiesNetworkError, retryableCancellableMutableRequest: RetryableCancellableMutableRequest, autoRetryAttempts: Int) {
+        //This is invoked before the failure callback is called
+	//Here, you can define some universal behaviors for error handling
+	//For example:
+	//You can retry the request if it fails because of expired authorization data
+	if (error.code == 403) {
+		val headers = retryableCancellableMutableRequest.request.getHeaders().toMutableMap()        	
+		headers["Authorization"] = getNewAuthorization()
+        	retryableCancellableMutableRequest.request.setRequestHeaders(headers)
+	
+	  	retryableCancellableMutableRequest.retryRequest()
+	}
+    }
+
+    override fun interceptResponse(result: Result<*, HoodiesNetworkError>, request: Request<Any>?) {
+        //This is invoked upon the successful completion of a request
+	//Here, you can define some universal behaviors for all responses
     }
 }
 ----
@@ -175,10 +184,9 @@ class EncDecInterceptor(override val context: Context) : EncryptionDecryptionInt
 === Using the MockWebServer
 The MockWebServer can replicate your API endpoints for unit testing purposes.
 
-1. Create a `MockWebServerManager.Builder()` and set the port: `val serverBuilder = MockWebServerManager.Builder().usePort(5000)`
-2. Mock your API endpoints:
-    .. (For simple use-cases) Using the MockServerMaker DSL:
-
+. Create a `MockWebServerManager.Builder()` and set the port: `val serverBuilder = MockWebServerManager.Builder().usePort(5000)`
+. Mock your API endpoints (For simple use-cases) Using the MockServerMaker DSL:
++
 [source,kotlin]
 ----
 //Make request body
@@ -205,11 +213,8 @@ MockServerMaker.Builder()
     .returnThisJsonIfInputMatches(JSONObject(response))
     .applyToMockWebServerBuilder("/test", serverBuilder)
 ---- 
-[start=2]
-2. Mock your API endpoints (continued):
-[start=2]
-    .. (For advanced behavior) By making a WebServerHandler() for your endpoint:
-
+.(For advanced behavior) By making a WebServerHandler() for your endpoint:
++
 [source,kotlin]
 ----
 val handler = object : WebServerHandler() {
@@ -232,17 +237,18 @@ val handler = object : WebServerHandler() {
 
 serverBuilder.addContext("/echodelay", handler)
 ---- 
-
-[start=3]
-3. Start the MockWebServer: `val server = serverBuilder.start()`
-4. Run your tests
-5. Stop the MockWebServer: `server.stop()`
+. Start the MockWebServer: `val server = serverBuilder.start()`
+. Run your tests
+. Stop the MockWebServer: `server.stop()`
 
 === More usage examples
 There are many more usage examples in the https://github.com/gapinc/hoodies-network/tree/main/examples[examples folder].
 
 == Running Tests
-The test classes package path is at com.gap.hoodies_network(androidTest). The test classes use test libraries Mockito and Junit, and run on an Android device. The MockWebServer is used to host the endpoints for the tests. The test classes are as follows:
+The test classes package path is at com.gap.hoodies_network(androidTest). 
+The test classes use test libraries Mockito and Junit, and run on an Android device. 
+The MockWebServer is used to host the endpoints for the tests. 
+The test classes are as follows:
 
 * CachingAndCryptographyTest
 * FormUrlEncodedRequestTest
@@ -263,29 +269,26 @@ The test classes package path is at com.gap.hoodies_network(androidTest). The te
 * UrlResolverTest
 * CookieTests
 
-You can run the tests by right-clicking on the androidTest folder and then clicking "Run Tests".
+Tests can be run by right-clicking on the androidTest folder and selecting "Run Tests" from the dropdown menu.
 
-Note: Having your Android emulator or physical device connected is required.
+NOTE: A physical device or Android emulator is required to run the tests.
 
 == Environment Setup
-* This is a Gradle project. You can use any Android and Gradle-compatible IDE. Use of Android Studio is highly suggested.
+* Since this is a Gradle project, any Android and Gradle-compatible IDE can be used. The recommendation is Android Studio.
 
 * Android Studio Bumblebee and above are supported.
 
-* It it also highly recommended that you have an emulator or physical device connected - this allows you to run the unit tests.
-
 == Conduct
-This is a professional environment and you are expected to conduct yourself in a professional and courteous manner. If you fail to exhibit appropriate conduct, your contributions and interactions will no longer be welcome here.
+This is a professional environment and you are expected to conduct yourself in a professional and courteous manner. 
+If you fail to exhibit appropriate conduct, your contributions and interactions will no longer be welcome here.
 
 == Contributing
-* All are welcome and encouraged to contribute. If you are looking for a place to start, try working on an unassigned issue with the `#good-first-issue` tag. 
+* Everyone is welcome and encouraged to contribute. If you are looking for a place to start, try working on an unassigned issue with the `good-first-issue` tag. 
 
 * All contributions are expected to conform to standard Kotlin code style and be covered by unit tests.
 
-* If you open a pull request with failing tests, your PR will not be merged and you will be asked to resolve the issue. 
+* PRs will not merged if there are failing tests.
 
 * If you would like to contribute code you can do so through GitHub by forking the repository and sending a pull request. 
 
-* When submitting code, please make every effort to follow existing conventions and style in order to keep the code as readable as possible. 
-
-* Please also make sure your code compiles and passes all tests by running `./gradlew clean build` (or gradlew.bat clean build for Windows).
+* When submitting code, please follow the existing conventions and style in order to keep the code readble. 
