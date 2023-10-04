@@ -24,8 +24,8 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Android (please complete the following information):**
- - Device: [e.g. Android Device]
- - OS: [e.g. Version 10]
+ - Device: [e.g. Galaxy S22]
+ - OS: [e.g. One UI 5.1]
  - Version [e.g. API version 30]
 
 **Additional context**
