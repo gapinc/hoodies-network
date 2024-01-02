@@ -3,13 +3,17 @@
 :source-highlighter: highlightjs
 
 == Introduction
-Hoodies-Network is a modern, type-safe and high-performance Android HTTP library. Though its feature set has expanded over time to match and sometimes exceed other libraries with respect to performance.  It was originally designed to make network calls in Gap’s Instant Apps.
+
+Hoodies-Network is a modern, type-safe and high-performance Android HTTP library.
+Though its feature set has expanded over time to match and sometimes exceed other libraries with respect to performance.
+It was originally designed to make network calls in Gap’s Instant Apps.
 
 * Is designed using a philosophy of simple and clean architecture
 * Offers a highly competitive feature set while providing a smaller binary size
 * Is Kotlin-native
 
 == Features
+
 * URL parameter replacement and query parameter support
 * Object conversion to request body (e.g., JSON, protocol buffers)
 * Object conversion from response body (e.g., JSON, protocol buffers, images)
@@ -25,7 +29,9 @@ Hoodies-Network is a modern, type-safe and high-performance Android HTTP library
 * Built-in cookie handling including encrypted persistent local storage
 
 == Usage Guide
+
 === Getting Started
+
 . Integrate this library as a dependency in your project:
 .. Clone the project and publish it to your local Maven repository:
 ... (In Android Studio top menu) Build -> Clean Build
@@ -52,10 +58,11 @@ val client = HoodiesNetworkClient.Builder()
 ----
 
 === Using Interceptors
-Optionally, you can create an `Interceptor` Class which inherits from `com.gap.network.interceptor.Interceptor`. 
-`Interceptors` allow you read/modify all properties (headers, body, etc) of requests and responses before they are executed/delivered.
 
-`CancellableMutableRequests` can be cancelled by calling `cancellableMutableRequest.cancelRequest(Success(object to return))` or `cancellableMutableRequest.cancelRequest(Failure(message, code, throwable))` - based on your usecase.
+Optionally, you can create an `Interceptor` Class which inherits from `com.gap.network.interceptor.Interceptor`.
+`Interceptors` allow you read/modify all properties (headers, body, etc.) of requests and responses before they are executed/delivered.
+
+`CancellableMutableRequests` can be cancelled by calling `cancellableMutableRequest.cancelRequest(Success(object to return))` or `cancellableMutableRequest.cancelRequest(Failure(message, code, throwable))` - based on your use case.
 
 `RetryableCancellableMutableRequests` can be cancelled as well as retried. 
 If the request has its body or headers changed, the retry attempt will execute the request with the changes intact.
@@ -104,7 +111,8 @@ class SessionInterceptor(context: Context) : Interceptor(context) {
 ----
 
 === Using Automatic Retry
-If a request fails due to a `SocketTimeoutException` or `IOException`, Hoodies-Network can automatically retry the request a specific amount of times. 
+
+If a request fails due to a `SocketTimeoutException` or `IOException`, Hoodies-Network can automatically retry the request a specific number of times.
 
 Retry is configured in the `HoodiesNetworkClient.Builder()` with the `.retryOnConnectionFailure(true, HoodiesNetworkClient.RetryCount.RETRY_MAX)` method.
 
@@ -117,6 +125,7 @@ The following options are available:
 * `HoodiesNetworkClient.RetryCount.RETRY_MAX`
 
 === Configuring Timeouts
+
 * Connect timeout can be configured using `HttpClientConfig.setConnectTimeOut(Duration.ofSeconds(seconds))`
 * Read timeout can be configured using `HttpClientConfig.setReadTimeOut(Duration.ofSeconds(seconds))`
 * Setting the duration to 0 will make the timeout infinite
@@ -124,7 +133,9 @@ The following options are available:
 * Defaults can be restored using `HttpClientConfig.setFactoryDefaultConfiguration()`
 
 === Handling Cookies
-By default, all cookies are ignored. Cookie retention and manipulation can be performed as follows:
+
+By default, all cookies are ignored.
+Cookie retention and manipulation can be performed as follows:
 
 . Pass a `CookieJar` to the `.enableCookiesWithCookieJar()` method of the `HoodiesNetworkClient.Builder()`:
 .. (For most use-cases) Use the `CookieJar()`
@@ -138,7 +149,9 @@ By default, all cookies are ignored. Cookie retention and manipulation can be pe
 .. `removeAllCookies()` deleted all cookies in the `CookieJar`
 
 === Using the Cache
-By default, no data is cached. Caching can be configured and enabled as follows:
+
+By default, no data is cached.
+Caching can be configured and enabled as follows:
 
 . Create a `CacheEnabled` object 
 .. If the data in the cache needs to be encrypted, set `encryptionEnabled = true`
@@ -156,6 +169,7 @@ return@withContext client.getUrlQueryParam<LocationAttribute>(
 ----
 
 === Using Encryption/Decryption Interceptors
+
 Encryption/decryption of the request and response bodies can be implemented by passing an `EncryptionDecryptionInterceptor` to the `.addEncryptionDecryptionInterceptor(encDecInterceptor)` method of the `HoodiesNetworkClient.Builder()`.
 
 [source,kotlin]
@@ -182,6 +196,7 @@ class EncDecInterceptor(override val context: Context) : EncryptionDecryptionInt
 ----
 
 === Using the MockWebServer
+
 The MockWebServer can replicate your API endpoints for unit testing purposes.
 
 . Create a `MockWebServerManager.Builder()` and set the port: `val serverBuilder = MockWebServerManager.Builder().usePort(5000)`
@@ -213,7 +228,7 @@ MockServerMaker.Builder()
     .returnThisJsonIfInputMatches(JSONObject(response))
     .applyToMockWebServerBuilder("/test", serverBuilder)
 ---- 
-.(For advanced behavior) By making a WebServerHandler() for your endpoint:
+.(For advanced behavior) By making a `WebServerHandler()` for your endpoint:
 +
 [source,kotlin]
 ----
@@ -242,10 +257,12 @@ serverBuilder.addContext("/echodelay", handler)
 . Stop the MockWebServer: `server.stop()`
 
 === More usage examples
+
 There are many more usage examples in the https://github.com/gapinc/hoodies-network/tree/main/examples[examples folder].
 
 == Running Tests
-The test classes package path is at com.gap.hoodies_network(androidTest). 
+
+The test classes package path is at com.gap.hoodies_network(androidTest).
 The test classes use test libraries Mockito and Junit, and run on an Android device. 
 The MockWebServer is used to host the endpoints for the tests. 
 The test classes are as follows:
@@ -274,21 +291,21 @@ Tests can be run by right-clicking on the androidTest folder and selecting "Run 
 NOTE: A physical device or Android emulator is required to run the tests.
 
 == Environment Setup
-* Since this is a Gradle project, any Android and Gradle-compatible IDE can be used. The recommendation is Android Studio.
 
+* Since this is a Gradle project, any Android and Gradle-compatible IDE can be used.
+The recommendation is Android Studio.
 * Android Studio Bumblebee and above are supported.
 
 == Conduct
-This is a professional environment and you are expected to conduct yourself in a professional and courteous manner. 
+
+This is a professional environment, and you are expected to conduct yourself in a professional and courteous manner.
 If you fail to exhibit appropriate conduct, your contributions and interactions will no longer be welcome here.
 
 == Contributing
-* Everyone is welcome and encouraged to contribute. If you are looking for a place to start, try working on an unassigned issue with the `good-first-issue` tag. 
 
+* Everyone is welcome and encouraged to contribute.
+If you are looking for a place to start, try working on an unassigned issue with the `good-first-issue` tag.
 * All contributions are expected to conform to standard Kotlin code style and be covered by unit tests.
-
-* PRs will not merged if there are failing tests.
-
-* If you would like to contribute code you can do so through GitHub by forking the repository and sending a pull request. 
-
-* When submitting code, please follow the existing conventions and style in order to keep the code readble. 
+* PRs will not be merged if there are failing tests.
+* If you would like to contribute code you can do so through GitHub by forking the repository and sending a pull request.
+* When submitting code, please follow the existing conventions and style in order to keep the code readable.
