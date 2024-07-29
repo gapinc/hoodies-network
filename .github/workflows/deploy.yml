@@ -2,9 +2,9 @@ name: deploy to sonatype
 
 on:
   push:
-    branches: [ "deploy" ]
+    branches: [ release/** ]
   pull_request:
-    branches: [ "deploy" ]
+    branches: [ release/** ]
 
 jobs:
   build:
