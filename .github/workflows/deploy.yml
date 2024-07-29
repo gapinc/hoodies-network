@@ -39,8 +39,8 @@ jobs:
         env:
           GPG_KEY_NAME: ${{ secrets.GPG_KEY_NAME }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-          CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
-          CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
+          CENTRAL_USERNAME: ${{ secrets.SONARTYPE_USERNAME }}
+          CENTRAL_PASSWORD: ${{ secrets.SONARTYPE_PASSWORD }}
         run: |
           mkdir -p $HOME/.m2
           echo "<settings>
