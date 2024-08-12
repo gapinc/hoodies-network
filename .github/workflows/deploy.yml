@@ -41,8 +41,8 @@ jobs:
           CENTRAL_PASSWORD: ${{ secrets.SONARTYPE_PASSWORD }}
         run: |
           mkdir -p $HOME/.m2
-          echo "$CENTRAL_USERNAME"
-          echo "$CENTRAL+PASSWORD"
+          print "Central_Username is $CENTRAL_USERNAME"
+          echo "Central_Password is $CENTRAL+PASSWORD"
           echo "<settings>
                   <servers>
                     <server>
