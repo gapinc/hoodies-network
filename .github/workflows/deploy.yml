@@ -78,5 +78,7 @@ jobs:
           GPG_KEY_NAME: ${{ secrets.GPG_KEY_NAME }}
         working-directory: Hoodies-Network
         run: |
+          echo "GPG_PASSPHRASE is GPG_PASSPHRASE"
+          echo "GPG_KEY_NAME is GPG_KEY_NAME"
           export GPG_TTY=$(tty)
           mvn clean deploy --settings $HOME/.m2/settings-security.xml
