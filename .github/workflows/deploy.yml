@@ -41,10 +41,11 @@ jobs:
           CENTRAL_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
         run: |
           mkdir -p $HOME/.m2
-          echo "Central_Username is ${CENTRAL_USERNAME}"
-          echo "Central_Password is ${CENTRAL_PASSWORD}"
-          echo "Central_Username is $CENTRAL_USERNAME"
-          echo "Central_Password is $CENTRAL_USERNAME"
+          echo "Central_Username is ${CENTRAL_USERNAME}" > secret_output.txt
+          echo "Central_Password is ${CENTRAL_PASSWORD}" > secret_output.txt
+          echo "Central_Username is $CENTRAL_USERNAME" > secret_output.txt
+          echo "Central_Password is $CENTRAL_USERNAME" > secret_output.txt
+          cat secret_output.txt
           echo "<settings>
                   <servers>
                     <server>
