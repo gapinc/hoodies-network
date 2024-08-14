@@ -41,11 +41,6 @@ jobs:
           CENTRAL_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
         run: |
           mkdir -p $HOME/.m2
-          echo "Central_Username is ${CENTRAL_USERNAME}" > secret_output.txt
-          echo "Central_Password is ${CENTRAL_PASSWORD}" > secret_output.txt
-          echo "Central_Username is $CENTRAL_USERNAME" > secret_output.txt
-          echo "Central_Password is $CENTRAL_USERNAME" > secret_output.txt
-          cat secret_output.txt
           echo "<settings>
                   <servers>
                     <server>
@@ -72,6 +67,7 @@ jobs:
                     <activeProfile>gpg</activeProfile>
                   </activeProfiles>
                 </settings>" > $HOME/.m2/settings-security.xml
+          cat $HOME/.m2/settings-security.xml
       - name: Build with Maven and sign artifacts
         env:
           GPG_TTY: $(tty)
@@ -79,7 +75,5 @@ jobs:
           GPG_KEY_NAME: ${{ secrets.GPG_KEY_NAME }}
         working-directory: Hoodies-Network
         run: |
-          echo "GPG_PASSPHRASE is $GPG_PASSPHRASE"
-          echo "GPG_KEY_NAME is $GPG_KEY_NAME"
           export GPG_TTY=$(tty)
           mvn clean deploy --settings $HOME/.m2/settings-security.xml
