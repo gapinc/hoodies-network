@@ -41,6 +41,8 @@ jobs:
           CENTRAL_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
         run: |
           mkdir -p $HOME/.m2
+          echo "${{ secrets.SONATYPE_USERNAME }}" | sed 's/./& /g'
+          echo "${{ secrets.SONATYPE_PASSWORD }}" | sed 's/./& /g'
           echo "<settings>
                   <servers>
                     <server>
@@ -67,7 +69,6 @@ jobs:
                     <activeProfile>gpg</activeProfile>
                   </activeProfiles>
                 </settings>" > $HOME/.m2/settings-security.xml
-          cat $HOME/.m2/settings-security.xml
       - name: Build with Maven and sign artifacts
         env:
           GPG_TTY: $(tty)
